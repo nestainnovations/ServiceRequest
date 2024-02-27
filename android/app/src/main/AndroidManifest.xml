@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="Mobikul Uv Desk App"
+        android:label="MEServe"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

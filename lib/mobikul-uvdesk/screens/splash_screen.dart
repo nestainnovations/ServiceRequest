@@ -11,6 +11,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/configuration/mobikul_theme.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/app_constants.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/app_routes.dart';
@@ -38,7 +40,7 @@ class SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: const Key("SplashScaffoldKey"),
-      backgroundColor: MobikulTheme.accentColor,
+      backgroundColor: Colors.white,
       body: Stack(
         key: const Key("SplashStackKey"),
         children: [
@@ -46,41 +48,68 @@ class SplashScreenState extends State<SplashScreen> {
             key: const Key("SplashContainerKey"),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: MobikulTheme.accentColor,
+            color: Colors.white,
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 4,
-            right: MediaQuery.of(context).size.width / 4,
-            top: MediaQuery.of(context).size.width / 4,
-            bottom: MediaQuery.of(context).size.width / 4,
-            child: Column(
-              children: [
-                Image.asset(
-                  AppImages.splashScreen,
-                  fit: BoxFit.fill,
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: MediaQuery.of(context).size.width / 2,
-                  key: const Key("SplashImageKey"),
-                ),
-                Text(
-                  ApplicationLocalizations.of(context)!
-                      .translate(StringKeys.appName),
-                  style: MobikulTheme.mobikulTheme.textTheme.titleLarge?.copyWith(color: MobikulTheme.primaryButtonTextColor),
-                  key: const Key("SplashTextKey"),
-                )
-              ],
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: Center(
+              child: Image.asset(
+                AppImages.splashScreen,
+                fit: BoxFit.contain, // Adjust the fit to contain the image within its container
+                width: MediaQuery.of(context).size.width * 0.8, // Set the width to 80% of the screen width
+                height: MediaQuery.of(context).size.height * 0.8, // Set the height to 80% of the screen height
+                key: const Key("SplashImageKey"),
+              ),
             ),
           ),
           Positioned(
             bottom: 20,
             width: MediaQuery.of(context).size.width,
             child: Center(
-              child: CircularProgressIndicator(
-                color: MobikulTheme.primaryColor,
-                key: const Key("SplashIndicatorKey"),
+              child: Column(
+                children: [
+                  CircularProgressIndicator(
+                    color: MobikulTheme.primaryColor,
+                    key: const Key("SplashIndicatorKey"),
+                  ),
+                  SizedBox(height: 10),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Developed by ",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        TextSpan(
+                          text: "N",
+                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: "esta ",
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: "I",
+                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: "nnovations",
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch("https://nestainnovations.blogspot.com");
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
