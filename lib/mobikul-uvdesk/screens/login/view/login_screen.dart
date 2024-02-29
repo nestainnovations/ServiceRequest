@@ -142,12 +142,44 @@ class LoginScreenState extends State<LoginScreen> with EmailValidator{
                       height: MediaQuery.of(context).size.width/6,
                     ),
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(height: 50,),
                   Center(
-                    child: Text(
-                      StringKeys.loginPageHeaderLabel.localized(),
-                      style: MobikulTheme.mobikulTheme.textTheme.headlineSmall,
-                    )
+                    child: Column(
+                      children: [
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: const TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Log in to ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 26,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'MEServe ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF180563),
+                                  fontSize: 26,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Text(
+                          'Moopens Service App.',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            color: Color(0xFFA80A0A),
+                            fontSize: 22,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 60,),
                   AppTextField().getTextField(
