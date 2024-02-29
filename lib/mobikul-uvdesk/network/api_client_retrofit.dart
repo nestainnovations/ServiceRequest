@@ -54,7 +54,7 @@ abstract class ApiClientRetrofit {
       return handler.next(options);
     }, onResponse: (response, handler) async {
       return handler.next(response);
-    }, onError: (DioError e, handler) {
+    }, onError: (DioException e, handler) {
       return handler.next(e);
     }));
 

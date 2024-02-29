@@ -34,11 +34,6 @@ class ApplicationLocalizations {
   Map<String, String> ?_localizedStrings;
 
   Future<bool> load() async {
-    //TODO: use shared preference here to fetch the language
-    // var selectedCode = await SharedPreferenceHelper.getCustomerLanguage();
-    // if(!(supportedLocale.contains(selectedCode))) {
-    //   selectedCode = supportedLocale.first;
-    // }
     var selectedCode = "en";
 
 
@@ -65,8 +60,6 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) {
-    // Include all of your supported language codes here
-    //TODO change this to the set of languages
     return true;
   }
 

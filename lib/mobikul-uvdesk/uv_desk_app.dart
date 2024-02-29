@@ -32,7 +32,6 @@ class UvDeskAppState extends State<UvDeskApp> {
   Locale? _locale;
   @override
   void initState() {
-    //TODO : update Locale from shared preference as per multi language feature
     _locale = const Locale("en");
     super.initState();
   }
@@ -49,8 +48,7 @@ class UvDeskAppState extends State<UvDeskApp> {
       initialRoute: AppRoutes.splash,
       onGenerateRoute: app_navigation.generateRoute,
       locale: _locale,
-      title: "Mobikul Uv Desk App",
-      // localeResolutionCallback: ,// TODO use this once localization is finalised
+      title: "MEServe",
 
     );
   }

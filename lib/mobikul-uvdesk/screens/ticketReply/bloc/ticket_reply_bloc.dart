@@ -42,7 +42,7 @@ class TicketReplyBloc extends Bloc<TicketReplyEvent, TicketReplyState> {
           emit(TicketReplySuccessState(model));
         }
       }catch(error, _){
-        if(error is DioError){
+        if(error is DioException){
           if(error.response != null){
             final message = error.response!.data['message'];
             emit(TicketReplyErrorState(message));

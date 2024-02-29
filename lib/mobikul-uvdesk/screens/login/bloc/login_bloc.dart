@@ -41,7 +41,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             emit(const LoginStateError(''));
           }
         } catch (error, _) {
-          if(error is DioError){
+          if(error is DioException){
             if(error.response != null){
               final message = error.response!.data['message'];
               emit(LoginStateError(message));

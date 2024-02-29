@@ -16,9 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/configuration/mobikul_theme.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/app_constants.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/app_routes.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/string_keys.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/app_storage_pref.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/application_localization.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -75,29 +73,29 @@ class SplashScreenState extends State<SplashScreen> {
                     color: MobikulTheme.primaryColor,
                     key: const Key("SplashIndicatorKey"),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
+                        const TextSpan(
                           text: "Developed by ",
                           style: TextStyle(color: Colors.grey),
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: "N",
                           style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: "esta ",
                           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: "I",
                           style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
                           text: "nnovations",
-                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               launch("https://nestainnovations.blogspot.com");

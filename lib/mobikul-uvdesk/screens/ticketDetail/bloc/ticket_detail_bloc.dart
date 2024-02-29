@@ -40,7 +40,7 @@ class TicketDetailBloc extends Bloc<TicketDetailEvent, TicketDetailState> {
           emit(TicketDetailStateError(""));
         }
       } catch (error, _) {
-        if (error is DioError) {
+        if (error is DioException) {
           if (error.response != null) {
             final message = error.response!.data['message'];
             emit(TicketDetailStateError(message));

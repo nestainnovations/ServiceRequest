@@ -56,7 +56,7 @@ class DownloadHelper {
               AlertMessage.showSuccess(ApplicationLocalizations.instance!.translate(StringKeys.fileSavedOnDownloadFolder), context);
             }
             debugPrint("File is saved to download folder.");
-          } on DioError catch (e) {
+          } on DioException catch (e) {
             debugPrint(e.message);
           }
         }

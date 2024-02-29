@@ -42,7 +42,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           emit(const DashboardStateError(""));
         }
       } catch (error, _) {
-        if (error is DioError) {
+        if (error is DioException) {
           if (error.response != null) {
             final message = error.response!.data['message'];
             emit(DashboardStateError(message));
@@ -63,7 +63,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           emit(const DashboardStateError(""));
         }
       }catch (error, _) {
-        if (error is DioError) {
+        if (error is DioException) {
           if (error.response != null) {
             final message = error.response!.data['message'];
             emit(DashboardStateError(message));
