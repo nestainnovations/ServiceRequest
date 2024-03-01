@@ -162,7 +162,7 @@ class LoginScreenState extends State<LoginScreen> with EmailValidator{
                                 text: 'MEServe ',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF180563),
+                                  color: Color(0xFF0B2D63),
                                   fontSize: 26,
                                 ),
                               ),
@@ -175,7 +175,7 @@ class LoginScreenState extends State<LoginScreen> with EmailValidator{
                             fontWeight: FontWeight.bold,
                             fontStyle: FontStyle.italic,
                             color: Color(0xFFA80A0A),
-                            fontSize: 22,
+                            fontSize: 18,
                           ),
                         ),
                       ],

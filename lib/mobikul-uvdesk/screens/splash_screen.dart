@@ -12,7 +12,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/configuration/mobikul_theme.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/app_constants.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/app_routes.dart';
@@ -97,8 +97,8 @@ class SplashScreenState extends State<SplashScreen> {
                           text: "nnovations",
                           style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              launch("https://nestainnovations.blogspot.com");
+                            ..onTap = () {                                     
+                                    launchUrlString("https://nestainnovations.blogspot.com");                                      
                             },
                         ),
                       ],
