@@ -154,16 +154,16 @@ class LoginScreenState extends State<LoginScreen> with EmailValidator{
                                 text: 'Log in to ',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: 26,
+                                  color: Color(0xFFA69F9F),
+                                  fontSize: 24,
                                 ),
                               ),
                               TextSpan(
                                 text: 'MEServe ',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF0B2D63),
-                                  fontSize: 26,
+                                  color: Color(0xFFA80A0A),
+                                  fontSize: 24,
                                 ),
                               ),
                             ],
