@@ -259,14 +259,15 @@ class TicketReplyScreenState extends State<TicketReplyScreen> {
       attachmentMultipartFileList = await convertListToMultipart(fileList);
     }
 
-    if (fileList.isNotEmpty && fileList.length > 5) {
-      if (context.mounted) {
-        AlertMessage.showError(
-            ApplicationLocalizations.instance!
-                .translate(StringKeys.attachmentCountMoreThan5Label),
-            context);
-      }
-    } else {
+    BuildContext? currentContext = context;
+      if (currentContext.mounted) {
+        if (fileList.isNotEmpty && fileList.length > 5) {
+          AlertMessage.showError(
+              ApplicationLocalizations.instance!
+                  .translate(StringKeys.attachmentCountMoreThan5Label),
+              currentContext);
+        }
+      } else {
       showSubmitOptionDialog(message, fileList.isNotEmpty ? attachmentMultipartFileList: null);
     }
   }

@@ -24,55 +24,79 @@ class DownloadHelper {
   var tag = "DownloadFile";
   String savePath = "";
 
-  Future downloadPersonalData(String url, String fileName,String fileType, BuildContext context) async {
-    try {
-      debugPrint("DOWNLOAD_URL==> $url");
-      Map<Permission, PermissionStatus> status = await [
-        Permission.storage,
-        //add more permission to request here.
-      ].request();
-      if (status[Permission.storage]!.isGranted) {
-        var dir = await DownloadsPathProvider.downloadsDirectory;
-        if(dir != null){
+    Future<void> downloadPersonalData(
+      String url,
+      String fileName,
+      String fileType,
+      BuildContext context,
+    ) async {
+      // Capture the context before entering the asynchronous part
+      BuildContext? currentContext = context;
 
-          String saveName = "";
-          if (fileType.isNotEmpty) {
-            saveName = "${fileName.toString()}.$fileType";
-          } else {
-            saveName = fileName.toString();
-          }
-          String savePath = "${dir.path}/$saveName";
+      try {
+        debugPrint("DOWNLOAD_URL==> $url");
+        Map<Permission, PermissionStatus> status = await [
+          Permission.storage,
+          //add more permission to request here.
+        ].request();
+        if (status[Permission.storage]!.isGranted) {
+          var dir = await DownloadsPathProvider.downloadsDirectory;
+          if (dir != null) {
+            String saveName = "";
+            if (fileType.isNotEmpty) {
+              saveName = "${fileName.toString()}.$fileType";
+            } else {
+              saveName = fileName.toString();
+            }
+            String savePath = "${dir.path}/$saveName";
 
-          try {
-            await Dio().download(
+            try {
+              await Dio().download(
                 url,
                 savePath,
                 onReceiveProgress: (received, total) {
                   if (total != -1) {
                     debugPrint("${(received / total * 100).toStringAsFixed(0)}%");
                   }
-                });
-            if(context.mounted){
-              AlertMessage.showSuccess(ApplicationLocalizations.instance!.translate(StringKeys.fileSavedOnDownloadFolder), context);
+                },
+              );
+              // Use the captured context synchronously
+              if (currentContext.mounted) {
+                AlertMessage.showSuccess(
+                  ApplicationLocalizations.instance!
+                      .translate(StringKeys.fileSavedOnDownloadFolder),
+                  currentContext,
+                );
+              }
+              debugPrint("File is saved to download folder.");
+            } on DioException catch (e) {
+              debugPrint(e.message);
             }
-            debugPrint("File is saved to download folder.");
-          } on DioException catch (e) {
-            debugPrint(e.message);
           }
+        } else if (status[Permission.storage]!.isDenied) {
+          Permission.storage.request();
+          // Use the captured context synchronously
+          if (currentContext.mounted) {
+            AlertMessage.showError(
+              ApplicationLocalizations.instance!
+                  .translate(StringKeys.noPermissionToReadWriteStorage),
+              currentContext,
+            );
+          }
+          debugPrint("${tag}permission is denied ->requesting");
         }
-      } else if (status[Permission.storage]!.isDenied) {
-        Permission.storage.request();
-        if(context.mounted){
-          AlertMessage.showError(ApplicationLocalizations.instance!.translate(StringKeys.noPermissionToReadWriteStorage), context);
+      } catch (e) {
+        // Use the captured context synchronously
+        if (currentContext.mounted) {
+          AlertMessage.showError(
+            ApplicationLocalizations.instance!
+                .translate(StringKeys.somethingWentWrong),
+            currentContext,
+          );
         }
-        debugPrint("${tag}permission is denied ->requesting");
+        debugPrint("${tag}exception while downloading invoice $e");
       }
-    } catch (e) {
-      AlertMessage.showError(ApplicationLocalizations.instance!.translate(StringKeys.somethingWentWrong), context);
-      debugPrint("${tag}exception while downloading invoice $e");
     }
-  }
-
   /*
   * Will return the directory path at which invoice will save.
   * it will not return the external directory path

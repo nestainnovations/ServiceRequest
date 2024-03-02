@@ -142,7 +142,7 @@ class LoginScreenState extends State<LoginScreen> with EmailValidator{
                       height: MediaQuery.of(context).size.width/6,
                     ),
                   ),
-                  const SizedBox(height: 50,),
+                  const SizedBox(height: 25,),
                   Center(
                     child: Column(
                       children: [
@@ -175,7 +175,7 @@ class LoginScreenState extends State<LoginScreen> with EmailValidator{
                             fontWeight: FontWeight.bold,
                             fontStyle: FontStyle.italic,
                             color: Color(0xFFA80A0A),
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                         ),
                       ],
