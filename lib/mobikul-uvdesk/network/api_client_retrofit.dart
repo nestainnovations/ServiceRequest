@@ -58,8 +58,8 @@ abstract class ApiClientRetrofit {
       return handler.next(e);
     }));
 
-    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
+    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+      HttpClient client = HttpClient();
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
       return client;
