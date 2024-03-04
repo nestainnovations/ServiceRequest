@@ -142,7 +142,7 @@ class LoginScreenState extends State<LoginScreen> with EmailValidator{
                       height: MediaQuery.of(context).size.width/6,
                     ),
                   ),
-                  const SizedBox(height: 25,),
+                  const SizedBox(height: 40,),
                   Center(
                     child: Column(
                       children: [
@@ -181,7 +181,7 @@ class LoginScreenState extends State<LoginScreen> with EmailValidator{
                       ],
                     ),
                   ),
-                  const SizedBox(height: 60,),
+                  const SizedBox(height: 25,),
                   AppTextField().getTextField(
                       context,
                       emailController,
