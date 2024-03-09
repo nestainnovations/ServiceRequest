@@ -20,6 +20,13 @@ import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/string_keys
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/app_alert_message.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/application_localization.dart';
 
+void main() {
+  // Initialize Dio with custom timeout settings
+  Dio dio = Dio();
+  dio.options.connectTimeout = const Duration(seconds: 300); // 5 minutes
+  dio.options.receiveTimeout = const Duration(seconds: 300); // 5 minutes
+}
+
 class DownloadHelper {
   var tag = "DownloadFile";
   String savePath = "";
@@ -34,21 +41,24 @@ class DownloadHelper {
       BuildContext? currentContext = context;
 
       try {
-        debugPrint("DOWNLOAD_URL==> $url");
-        Map<Permission, PermissionStatus> status = await [
-          Permission.storage,
-          //add more permission to request here.
-        ].request();
-        if (status[Permission.storage]!.isGranted) {
-          var dir = await DownloadsPathProvider.downloadsDirectory;
-          if (dir != null) {
-            String saveName = "";
-            if (fileType.isNotEmpty) {
-              saveName = "${fileName.toString()}.$fileType";
-            } else {
-              saveName = fileName.toString();
-            }
-            String savePath = "${dir.path}/$saveName";
+      debugPrint("DOWNLOAD_URL==> $url");
+      // Explicitly request storage permission before downloading
+      var status = await Permission.storage.request();
+      var mediaStatus = await Permission.mediaLibrary.request();
+      if (status.isGranted || mediaStatus.isGranted) {
+        var dir = await DownloadsPathProvider.downloadsDirectory;
+        if (dir != null) {
+          String saveName = "";
+          if (fileType.isNotEmpty) {
+            saveName = "${fileName.toString()}.$fileType";
+          } else {
+            saveName = fileName.toString();
+          }
+          String savePath = "${dir.path}/$saveName";
+            File file = File(savePath);
+              if (await file.exists()) {
+                await file.delete();
+              }
 
             try {
               await Dio().download(
@@ -73,19 +83,37 @@ class DownloadHelper {
               debugPrint(e.message);
             }
           }
-        } else if (status[Permission.storage]!.isDenied) {
-          Permission.storage.request();
-          // Use the captured context synchronously
-          if (currentContext.mounted) {
-            AlertMessage.showError(
-              ApplicationLocalizations.instance!
-                  .translate(StringKeys.noPermissionToReadWriteStorage),
-              currentContext,
-            );
-          }
-          debugPrint("${tag}permission is denied ->requesting");
+        } else if (status.isDenied || status.isPermanentlyDenied || mediaStatus.isDenied || mediaStatus.isPermanentlyDenied) {
+        // Handle the case where permission is denied or permanently denied
+        // Show a dialog to prompt the user to grant permission
+        showDialog(
+            context: currentContext,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Permission Required"),
+                content: const Text("Please grant storage and media permissions to continue."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close the dialog
+                      openAppSettings(); // Open app settings to allow the user to grant permissions
+                    },
+                    child: const Text("Open Settings"),
+                  ),
+                ],
+              );
+            },
+          );
+        if (currentContext.mounted) {
+          AlertMessage.showError(
+            ApplicationLocalizations.instance!
+                .translate(StringKeys.noPermissionToReadWriteStorage),
+            currentContext,
+          );
         }
-      } catch (e) {
+        debugPrint("${tag}permission is denied ->requesting");
+      }
+    }  catch (e) {
         // Use the captured context synchronously
         if (currentContext.mounted) {
           AlertMessage.showError(

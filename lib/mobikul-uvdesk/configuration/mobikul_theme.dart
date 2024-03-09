@@ -16,10 +16,10 @@ class MobikulTheme {
   static Color primaryColor = Colors.white;
 
   ///this color will use for all the buttons,icon colors etc.
-  static Color accentColor = const Color(0xFF8473F3);
+  static Color accentColor = const Color(0xFF22bb33);
 
   ///this is for all appbar icons
-  static Color appBarItemColor = Colors.black;
+  static Color appBarItemColor = Colors.white;
 
   ///this is for app bar background color
   static Color appBarBackgroundColor = Colors.grey.shade400;

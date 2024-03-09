@@ -71,11 +71,15 @@ class DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: EasySearchBar(
-        title: Text(
-          ApplicationLocalizations.instance!
-              .translate(StringKeys.dashboardPageTitleLabel),
-          style: MobikulTheme.mobikulTheme.textTheme.bodyLarge,
-        ),
+      backgroundColor: const Color(0xFFD91818), // Set the app bar color to #D91818
+      title: const Text("Service Requests", // Change the title text to "Service Requests"
+                        textAlign: TextAlign.center,
+                   style: TextStyle(
+                   color: Colors.white, // Set the text color to white
+                   fontFamily: 'Montserrat',
+                   fontSize: 20, // You might need to adjust the font size as per your requirement
+                    ),
+                  ),
         onSearch: _onSearchChanged,
         searchBackIconTheme: IconThemeData(color: Colors.grey.shade900),
         showClearSearchIcon: true,
@@ -157,6 +161,7 @@ class DashboardScreenState extends State<DashboardScreen> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color:Colors.white,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,9 +170,9 @@ class DashboardScreenState extends State<DashboardScreen> {
             children: [
               Material(
                 child: InkWell(
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_back_rounded,
-                    color: Colors.grey.shade900,
+                    color: Color(0xFFD91818),
                     size: 24,
                   ),
                   onTap: () {
@@ -194,39 +199,41 @@ class DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(
             height: 12,
           ),
-          Text(
-            ApplicationLocalizations.instance!
-                .translate(StringKeys.dashboardDrawerAgentLabel),
-            style: MobikulTheme.mobikulTheme.textTheme.bodyMedium
-                ?.copyWith(color: Colors.grey),
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
                 appStoragePref.getAgentProfileImage(),
-                width: 100,
-                height: 100,
+                width: 80,
+                height: 80,
                 fit: BoxFit.cover,
               ),
             ),
           ),
           Text(
-            appStoragePref.getAgentName(),
-            style: MobikulTheme.mobikulTheme.textTheme.bodyMedium,
-          ),
+                appStoragePref.getAgentName(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold, // Set text to bold
+                  color: Color(0xFFD91818), // Set text color to #D91818
+                  fontSize: 16, // You might need to adjust the font size as per your requirement
+                ),
+              ),
+
           Text(
             appStoragePref.getAgentEmail(),
-            style: MobikulTheme.mobikulTheme.textTheme.bodyMedium
-                ?.copyWith(color: Colors.grey),
+            style: const TextStyle(
+                  fontWeight: FontWeight.bold, // Set text to bold
+                  color: Color.fromARGB(255, 2, 2, 3), // Set text color to #D91818
+                  fontSize: 14, // You might need to adjust the font size as per your requirement
+                ),
           ),
           const SizedBox(
             height: 8,
           ),
           const Divider(
             thickness: 1,
-            color: Colors.grey,
+            color: Color.fromARGB(255, 5, 5, 5),
           ),
           Material(
             child: InkWell(
@@ -235,9 +242,9 @@ class DashboardScreenState extends State<DashboardScreen> {
               },
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.logout,
-                    color: Colors.grey.shade900,
+                    color: Color.fromARGB(255, 190, 3, 3),
                   ),
                   Text(
                     ApplicationLocalizations.instance!
@@ -245,7 +252,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                     style: TextStyle(
                         color: Colors.grey.shade900,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14.0),
+                        fontSize: 16.0),
                   ),
                 ],
               ),
