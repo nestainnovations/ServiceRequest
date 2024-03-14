@@ -61,7 +61,7 @@ class ExpandableThreadViewState extends State<ExpandableThreadView> {
                               width: 60,
                             ),
                             onTap: () {
-                              DownloadHelper().downloadPersonalData(widget.attachmentList[index].downloadURL,widget.attachmentList[index].name, "", context);
+                              DownloadHelper().downloadPersonalData(widget.attachmentList[index].iconURL,widget.attachmentList[index].name, "", context);
                             },
                           ),
                         );

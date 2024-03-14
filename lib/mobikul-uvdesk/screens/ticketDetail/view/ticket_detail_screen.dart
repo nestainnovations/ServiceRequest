@@ -10,6 +10,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/configuration/mobikul_theme.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/app_routes.dart';
@@ -17,9 +18,9 @@ import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/string_keys
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/application_localization.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/utils.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper_widgets/app_dialog_helper.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper_widgets/expandable_text.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/models/ticket/ticket_details.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/screens/ticketDetail/bloc/ticket_detail_bloc.dart';
+import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/download_helper.dart';
 
 class TicketDetailScreen extends StatefulWidget {
   final int ticketId;
@@ -128,7 +129,7 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
       key: scaffoldKey,
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          SliverAppBar( backgroundColor: const Color.fromARGB(255, 16, 175, 162),
             actions: [
               IconButton(
                   onPressed: () {
@@ -160,7 +161,7 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
                 children: [
                   Icon(
                     Icons.circle,
-                    size: 12,
+                    size: 14,
                     color: Utils.fromHex(priorityColor),
                   ),
                   const SizedBox(
@@ -170,9 +171,13 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: Text(
                       dataModel.ticket!.subject,
-                      style: MobikulTheme.mobikulTheme.textTheme.bodyMedium
-                          ?.copyWith(
-                              overflow: TextOverflow.ellipsis, fontSize: 10),
+                      style: const TextStyle(
+                              color: Colors.white, // Set the text color to white
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                                )
+                          .copyWith(
+                              overflow: TextOverflow.ellipsis, fontSize: 14),
                       maxLines: 2,
                     ),
                   )
@@ -183,8 +188,6 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
           SliverList.separated(
             itemCount: dataModel.ticket?.threads.length,
             itemBuilder: (context, index) {
-              GlobalKey<ExpandableThreadViewState> textKey =
-                  GlobalKey<ExpandableThreadViewState>();
               return Container(
                 color: dataModel.ticket?.threads[index].threadType == "note"
                     ? Colors.yellow.shade200
@@ -213,39 +216,173 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
                         children: [
                           Row(
                             children: [
-                              Icon(
-                                Utils.getThreadIcon(dataModel
-                                    .ticket!.threads[index].threadType),
-                                color: Colors.grey.shade400,
+                              Text(
+                                dataModel.ticket!.threads[index].user!.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(color: Color(0xFF0b9941), fontWeight: FontWeight.bold, fontSize: 20,),
                               ),
                               const SizedBox(
                                 width: 4,
                               ),
                               Text(
-                                "${dataModel.ticket!.threads[index].user!.name}, ${dataModel.ticket!.threads[index].updatedAt}",
+                                dataModel.ticket!.threads[index].updatedAt,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: Colors.grey.shade600),
-                              )
+                                style: const TextStyle(color: Color(0xFFAB0A0A), fontSize: 15),
+                              ),
                             ],
                           ),
-                          Material(
-                            color:
-                                dataModel.ticket?.threads[index].threadType ==
-                                        "note"
-                                    ? Colors.yellow.shade200
-                                    : Colors.white,
+                          const SizedBox(
+                                height: 10,
+                          ),
+                            Material(
+                            color: dataModel.ticket?.threads[index].threadType == "note"
+                                ? Colors.yellow.shade200
+                                : Colors.white,
                             child: InkWell(
-                              child: ExpandableThreadView(
-                                text: Utils.parseHtmlString(
-                                    dataModel.ticket!.threads[index].message),
-                                attachmentList: dataModel
-                                    .ticket!.threads[index].attachments,
-                                key: textKey,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text(
+                                    'Message:',
+                                    style: TextStyle(
+                                      color: Color(0xFF000000),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                  height: 2,
+                                  ),
+                                  Text (Utils.parseHtmlString(
+                                        dataModel.ticket!.threads[index].message),
+                                        style: const TextStyle( color: Color(0xFFfC5A03), fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                        ),
+                                      ),
+                                  const SizedBox(
+                                  height: 18,
+                                  ),
+                                if (dataModel.ticket!.threads[index].attachments.isNotEmpty)
+                                  const Text(
+                                    'Attached images:',
+                                    style: TextStyle(
+                                      color: Color(0xFF000000),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                  height: 7,
+                                  ),
+                                  if (dataModel.ticket!.threads[index].attachments.isNotEmpty)
+                                   ...dataModel.ticket!.threads[index].attachments.map<Widget>((attachment) {
+                                        return Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 8.0), // Adjust vertical spacing as needed
+                                              child: GestureDetector(
+                                                onTap: () {
+                                        DownloadHelper().downloadPersonalData(attachment.iconURL, attachment.name, "", context);
+                                          },
+                                              child: Image.network(attachment.iconURL),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        const SizedBox(
+                                        height: 5,
+                                        ),
+                                  ExpansionTile(
+                                      title: const Text(
+                                        'Tap here!! to contact customer:',
+                                        style: TextStyle(
+                                          color: Color(0xFF2b21ed),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      children: [
+                                        const SizedBox(height: 5),
+                                        const Text(
+                                          'Contact number of customer:',
+                                          style: TextStyle(
+                                            color: Color(0xFF000000),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            String phoneNumber = dataModel.ticket!.mobileNumber;
+                                            // Ensure it's a valid phone number, then launch the dialer
+                                            if (await canLaunchUrl(Uri.parse('tel:$phoneNumber'))) {
+                                              await launchUrl(Uri.parse('tel:$phoneNumber'));
+                                            } else {
+                                              // Handle the error or show a message to the user
+                                              debugPrint('Could not launch the dialer');
+                                            }
+                                          },
+                                          child: Text(
+                                            dataModel.ticket!.mobileNumber,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Color(0xFF3437eb),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        const Text(
+                                          'District of customer:',
+                                          style: TextStyle(
+                                            color: Color(0xFF000000),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          dataModel.ticket!.district,
+                                          style: const TextStyle(
+                                            color: Color(0xFFeb7734),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        const Text(
+                                          'Alternate number of customer:',
+                                          style: TextStyle(
+                                            color: Color(0xFF000000),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            String phoneNumber = dataModel.ticket!.alternateMobileNumber;
+                                            // Ensure it's a valid phone number, then launch the dialer
+                                            if (await canLaunchUrl(Uri.parse('tel:$phoneNumber'))) {
+                                              await launchUrl(Uri.parse('tel:$phoneNumber'));
+                                            } else {
+                                              // Handle the error or show a message to the user
+                                              debugPrint('Could not launch the dialer');
+                                            }
+                                          },
+                                          child: Text(
+                                            dataModel.ticket!.alternateMobileNumber,
+                                            style: const TextStyle(
+                                              color: Color(0xFFeb3434),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                      ],
+                                    )
+                                ],
                               ),
-                              onTap: () {
-                                textKey.currentState?.toggleExpansion();
-                              },
                             ),
                           ),
                         ],
@@ -267,6 +404,8 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
         color: Colors.white,
         padding: const EdgeInsets.all(12.0),
         child: OutlinedButton(
+          style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF25fa49)),),
           onPressed: () {
             Navigator.pushNamed(context, AppRoutes.ticketReply,
                     arguments: dataModel)
@@ -276,17 +415,17 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.reply_rounded,
-                color: Colors.grey.shade900,
+                color: Colors.white,
               ),
               const SizedBox(
-                width: 4,
+                width: 8,
               ),
               Text(
                 ApplicationLocalizations.instance!
                     .translate(StringKeys.replyButtonLabel),
-                style: MobikulTheme.mobikulTheme.textTheme.bodyMedium,
+                style: const TextStyle(color: Colors.white, fontSize: 18,),
               ),
             ],
           ),

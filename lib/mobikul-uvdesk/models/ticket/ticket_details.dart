@@ -59,6 +59,12 @@ class Ticket {
   final int type;
   @JsonKey(defaultValue: '')
   final String subject;
+  @JsonKey(defaultValue: '')
+  final String mobileNumber;
+  @JsonKey(defaultValue: '')
+  final String district;
+  @JsonKey(defaultValue: '')
+  final String alternateMobileNumber;
   @JsonKey(defaultValue: false)
   final bool isNew;
   @JsonKey(defaultValue: false)
@@ -93,6 +99,9 @@ class Ticket {
     required this.status,
     required this.type,
     required this.subject,
+    required this.mobileNumber,
+    required this.district,
+    required this.alternateMobileNumber,
     required this.isNew,
     required this.isReplied,
     required this.isReplyEnabled,

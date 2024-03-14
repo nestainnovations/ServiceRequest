@@ -13,7 +13,7 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://uvdesktest.webkul.com/uvdesk1.1/public/api/v1';
+    baseUrl ??= 'https://service.happyharvard.org/public/api/v1';
   }
 
   final Dio _dio;
@@ -39,7 +39,11 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = LoginModel.fromJson(_result.data!);
     return value;
   }
@@ -62,7 +66,11 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = DashboardTicketList.fromJson(_result.data!);
     return value;
   }
@@ -85,7 +93,11 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = MyProfile.fromJson(_result.data!);
     return value;
   }
@@ -108,7 +120,11 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = BaseModel.fromJson(_result.data!);
     return value;
   }
@@ -137,7 +153,11 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = DashboardTicketList.fromJson(_result.data!);
     return value;
   }
@@ -160,7 +180,11 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = TicketDetails.fromJson(_result.data!);
     return value;
   }
@@ -234,7 +258,11 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = TicketAddReplyThread.fromJson(_result.data!);
     return value;
   }
@@ -250,5 +278,22 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
       }
     }
     return requestOptions;
+  }
+
+  String _combineBaseUrls(
+    String dioBaseUrl,
+    String? baseUrl,
+  ) {
+    if (baseUrl == null || baseUrl.trim().isEmpty) {
+      return dioBaseUrl;
+    }
+
+    final url = Uri.parse(baseUrl);
+
+    if (url.isAbsolute) {
+      return url.toString();
+    }
+
+    return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }

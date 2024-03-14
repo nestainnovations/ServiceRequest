@@ -24,6 +24,7 @@ import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper_widgets/loader
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/models/dashboard/dashboard_ticket_list.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/screens/dashboard/bloc/dashboard_bloc.dart';
 
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -77,7 +78,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                    style: TextStyle(
                    color: Colors.white, // Set the text color to white
                    fontFamily: 'Montserrat',
-                   fontSize: 20, // You might need to adjust the font size as per your requirement
+                   fontSize: 22, // You might need to adjust the font size as per your requirement
                     ),
                   ),
         onSearch: _onSearchChanged,
@@ -362,25 +363,31 @@ class DashboardScreenState extends State<DashboardScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
-                          height: 12,
+                          height: 20,
                         ),
                         Text(
                           currentTicket.subject,
                           style:
-                              MobikulTheme.mobikulTheme.textTheme.titleMedium,
+                              const TextStyle(
+                              color: Color (0xFFA30B0B), // Set the text color to white
+                              fontFamily: 'Montserrat',
+                              fontSize: 16, // You might need to adjust the font size as per your requirement
+                              fontWeight: FontWeight.bold, // Make the font bold
+                            ),
                           maxLines: 2,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(
-                          height: 6,
+                          height: 8,
                         ),
                         Text((currentTicket.group != null)
                             ? currentTicket.group!.name
                             : ' '),
                         const SizedBox(
-                          height: 2,
+                          height: 4,
                         ),
+                        
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -389,7 +396,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                               children: [
                                 Icon(
                                   Icons.circle,
-                                  size: 12,
+                                  size: 16,
                                   color: Utils.fromHex(
                                       currentTicket.priority!.colorCode),
                                 ),
