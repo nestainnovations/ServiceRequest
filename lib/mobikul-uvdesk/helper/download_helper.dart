@@ -20,16 +20,47 @@ import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/string_keys
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/app_alert_message.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/application_localization.dart';
 
-void main() {
-  // Initialize Dio with custom timeout settings
-  Dio dio = Dio();
-  dio.options.connectTimeout = const Duration(seconds: 300); // 5 minutes
-  dio.options.receiveTimeout = const Duration(seconds: 300); // 5 minutes
-}
 
 class DownloadHelper {
   var tag = "DownloadFile";
   String savePath = "";
+
+// This method is called before the download starts and handles permissions.
+  Future<bool> requestPermissions(BuildContext context) async {
+    var storageStatus = await Permission.storage.request();
+    var mediaStatus = await Permission.mediaLibrary.request();
+
+    if (storageStatus.isGranted || mediaStatus.isGranted) {
+      return true;
+    } else {
+      if (storageStatus.isPermanentlyDenied || mediaStatus.isPermanentlyDenied) {
+        await showPermissionDialog(context, "Storage and media permissions are required to download or upload files.");
+      }
+      return false;
+    }
+  }
+
+  // Shows a dialog prompting the user to open app settings.
+  Future<void> showPermissionDialog(BuildContext context, String message) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text("Permission Required"),
+          content: const Text("Please grant storage and media permissions to download or upload files."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Close the dialog
+                openAppSettings(); // Open app settings to allow the user to grant permissions
+              },
+              child: const Text("Open Settings"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
     Future<void> downloadPersonalData(
       String url,
@@ -86,33 +117,15 @@ class DownloadHelper {
         } else if (status.isDenied || status.isPermanentlyDenied || mediaStatus.isDenied || mediaStatus.isPermanentlyDenied) {
         // Handle the case where permission is denied or permanently denied
         // Show a dialog to prompt the user to grant permission
-        showDialog(
-            context: currentContext,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("Permission Required"),
-                content: const Text("Please grant storage and media permissions to continue."),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Close the dialog
-                      openAppSettings(); // Open app settings to allow the user to grant permissions
-                    },
-                    child: const Text("Open Settings"),
-                  ),
-                ],
+            if (currentContext.mounted) {
+              AlertMessage.showError(
+                ApplicationLocalizations.instance!
+                    .translate(StringKeys.noPermissionToReadWriteStorage),
+                currentContext,
               );
-            },
-          );
-        if (currentContext.mounted) {
-          AlertMessage.showError(
-            ApplicationLocalizations.instance!
-                .translate(StringKeys.noPermissionToReadWriteStorage),
-            currentContext,
-          );
-        }
-        debugPrint("${tag}permission is denied ->requesting");
-      }
+            }
+            debugPrint("${tag}permission is denied ->requesting");
+          }
     }  catch (e) {
         // Use the captured context synchronously
         if (currentContext.mounted) {
