@@ -12,29 +12,24 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/string_keys.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/app_alert_message.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/application_localization.dart';
 
 
 class DownloadHelper {
   var tag = "DownloadFile";
   String savePath = "";
 
-// This method is called before the download starts and handles permissions.
+  // This method is called before the download starts and handles permissions.
   Future<bool> requestPermissions(BuildContext context) async {
     var storageStatus = await Permission.storage.request();
-    var mediaStatus = await Permission.mediaLibrary.request();
 
-    if (storageStatus.isGranted || mediaStatus.isGranted) {
+    if (storageStatus.isGranted) {
       return true;
     } else {
-      if (storageStatus.isPermanentlyDenied || mediaStatus.isPermanentlyDenied) {
-        await showPermissionDialog(context, "Storage and media permissions are required to download or upload files.");
+      if (storageStatus.isPermanentlyDenied) {
+        await showPermissionDialog(context, "Storage permission is required to download or upload files.");
       }
       return false;
     }
@@ -47,7 +42,7 @@ class DownloadHelper {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text("Permission Required"),
-          content: const Text("Please grant storage and media permissions to download or upload files."),
+          content: const Text("Please grant storage permission to download or upload files."),
           actions: [
             TextButton(
               onPressed: () {
@@ -61,83 +56,68 @@ class DownloadHelper {
       },
     );
   }
-
+  
     Future<void> downloadPersonalData(
-      String url,
-      String fileName,
-      String fileType,
-      BuildContext context,
-    ) async {
-      // Capture the context before entering the asynchronous part
-      BuildContext? currentContext = context;
-
-      try {
-      debugPrint("DOWNLOAD_URL==> $url");
-      // Explicitly request storage permission before downloading
+    String url,
+    String fileName,
+    String fileType,
+    BuildContext context,
+  ) async {
+    try {
+      // Request storage permission before downloading
       var status = await Permission.storage.request();
-      var mediaStatus = await Permission.mediaLibrary.request();
-      if (status.isGranted || mediaStatus.isGranted) {
-        var dir = await DownloadsPathProvider.downloadsDirectory;
+      if (status.isGranted) {
+        var dir = await getExternalStorageDirectory();
         if (dir != null) {
-          String saveName = "";
-          if (fileType.isNotEmpty) {
-            saveName = "${fileName.toString()}.$fileType";
-          } else {
-            saveName = fileName.toString();
-          }
+          String saveName = "${fileName.toString()}.$fileType";
           String savePath = "${dir.path}/$saveName";
-            File file = File(savePath);
-              if (await file.exists()) {
-                await file.delete();
-              }
+          File file = File(savePath);
+          if (await file.exists()) {
+            await file.delete();
+          }
 
-            try {
-              await Dio().download(
-                url,
-                savePath,
-                onReceiveProgress: (received, total) {
-                  if (total != -1) {
-                    debugPrint("${(received / total * 100).toStringAsFixed(0)}%");
-                  }
-                },
-              );
-              // Use the captured context synchronously
-              if (currentContext.mounted) {
-                AlertMessage.showSuccess(
-                  ApplicationLocalizations.instance!
-                      .translate(StringKeys.fileSavedOnDownloadFolder),
-                  currentContext,
-                );
-              }
-              debugPrint("File is saved to download folder.");
-            } on DioException catch (e) {
-              debugPrint(e.message);
-            }
+          try {
+            await Dio().download(
+              url,
+              savePath,
+              onReceiveProgress: (received, total) {
+                if (total != -1) {
+                  debugPrint("${(received / total * 100).toStringAsFixed(0)}%");
+                }
+              },
+            );
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('File saved to downloads folder.'),
+              ),
+            );
+          } on DioError catch (e) {
+            debugPrint(e.message);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to download file.'),
+              ),
+            );
           }
-        } else if (status.isDenied || status.isPermanentlyDenied || mediaStatus.isDenied || mediaStatus.isPermanentlyDenied) {
-        // Handle the case where permission is denied or permanently denied
-        // Show a dialog to prompt the user to grant permission
-            if (currentContext.mounted) {
-              AlertMessage.showError(
-                ApplicationLocalizations.instance!
-                    .translate(StringKeys.noPermissionToReadWriteStorage),
-                currentContext,
-              );
-            }
-            debugPrint("${tag}permission is denied ->requesting");
-          }
-    }  catch (e) {
-        // Use the captured context synchronously
-        if (currentContext.mounted) {
-          AlertMessage.showError(
-            ApplicationLocalizations.instance!
-                .translate(StringKeys.somethingWentWrong),
-            currentContext,
-          );
         }
-        debugPrint("${tag}exception while downloading invoice $e");
+      } else {
+        // Handle the case where permission is denied or permanently denied
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Permission denied to access storage.'),
+          ),
+        );
       }
+    } catch (e) {
+      debugPrint("Exception while downloading file: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Something went wrong.'),
+        ),
+      );
     }
+  }
+
   /*
   * Will return the directory path at which invoice will save.
   * it will not return the external directory path
