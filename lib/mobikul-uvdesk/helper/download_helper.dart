@@ -87,14 +87,14 @@ class DownloadHelper {
               },
             );
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('File saved to downloads folder.'),
               ),
             );
-          } on DioError catch (e) {
+          } on DioException catch (e) {
             debugPrint(e.message);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Failed to download file.'),
               ),
             );
@@ -103,7 +103,7 @@ class DownloadHelper {
       } else {
         // Handle the case where permission is denied or permanently denied
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Permission denied to access storage.'),
           ),
         );
@@ -111,7 +111,7 @@ class DownloadHelper {
     } catch (e) {
       debugPrint("Exception while downloading file: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Something went wrong.'),
         ),
       );
