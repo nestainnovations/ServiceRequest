@@ -405,7 +405,7 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
         padding: const EdgeInsets.all(12.0),
         child: OutlinedButton(
           style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF25fa49)),),
+          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF22bb33)),),
           onPressed: () {
             Navigator.pushNamed(context, AppRoutes.ticketReply,
                     arguments: dataModel)
