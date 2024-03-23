@@ -117,11 +117,17 @@ class TicketReplyScreenState extends State<TicketReplyScreen> {
         key: scaffoldKey,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 16, 175, 162),
           title: Text(
             ApplicationLocalizations.instance!
                 .translate(StringKeys.replyButtonLabel)
                 .toCapitalized(),
-            style: MobikulTheme.mobikulTheme.textTheme.bodyLarge,
+            style: const TextStyle(
+                              color: Color.fromARGB(255, 255, 255, 255), // Set the text color to white
+                              fontFamily: 'Montserrat',
+                              fontSize: 18, // You might need to adjust the font size as per your requirement
+                              fontWeight: FontWeight.bold, // Make the font bold
+                            ),
           ),
           actions: [
             IconButton(
@@ -207,7 +213,7 @@ class TicketReplyScreenState extends State<TicketReplyScreen> {
                                           },
                                           child: const Icon(
                                             Icons.delete,
-                                            color: Colors.grey,
+                                            color: Color.fromARGB(255, 189, 7, 7),
                                           ),
                                         ),
                                       )
@@ -226,7 +232,7 @@ class TicketReplyScreenState extends State<TicketReplyScreen> {
                                           },
                                           child: const Icon(
                                             Icons.delete,
-                                            color: Colors.grey,
+                                            color: Color.fromARGB(255, 180, 7, 7),
                                           ),
                                         ),
                                       ),

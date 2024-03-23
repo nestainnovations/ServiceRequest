@@ -23,6 +23,7 @@ class DownloadHelper {
     // If storage permission is denied
     if (storageStatus.isPermanentlyDenied) {
       // If the permission is permanently denied, show a dialog
+      // ignore: use_build_context_synchronously
       await showPermissionDialog(context, "Storage permission is required to download or upload files.");
     } else if (!storageStatus.isGranted && !storageStatus.isPermanentlyDenied) {
       // If the permission is not granted but not permanently denied, request the MANAGE_EXTERNAL_STORAGE permission
@@ -35,6 +36,7 @@ class DownloadHelper {
         // If the MANAGE_EXTERNAL_STORAGE permission is denied
         if (manageStorageStatus.isPermanentlyDenied) {
           // If it's permanently denied, show a dialog
+          // ignore: use_build_context_synchronously
           await showPermissionDialog(context, "MANAGE_EXTERNAL_STORAGE permission is required to access the Downloads folder.");
         }
         // Since the permission is not granted, return false
