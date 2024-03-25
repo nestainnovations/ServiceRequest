@@ -22,6 +22,8 @@ import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/models/ticket/ticket_
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/screens/ticketDetail/bloc/ticket_detail_bloc.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/download_helper.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:photo_view/photo_view.dart';
+
 
 class TicketDetailScreen extends StatefulWidget {
   final int ticketId;
@@ -221,7 +223,7 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
                                 dataModel.ticket!.threads[index].user!.name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(color: Color(0xFF0b9941), fontWeight: FontWeight.bold, fontSize: 20,),
+                                style: const TextStyle(color: Color(0xFF0b9941), fontWeight: FontWeight.bold, fontSize: 18,),
                               ),
                               const SizedBox(
                                 width: 4,
@@ -230,7 +232,7 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
                                 dataModel.ticket!.threads[index].updatedAt,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(color: Color(0xFFAB0A0A), fontSize: 15),
+                                style: const TextStyle(color: Color(0xFFAB0A0A), fontSize: 13),
                               ),
                             ],
                           ),
@@ -310,6 +312,15 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
                                               child: GestureDetector(
                                                 onTap: () {
                                         DownloadHelper().downloadPersonalData(attachment.iconURL, attachment.name, "", context);
+                                        // Open the image using PhotoView
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => PhotoView(
+                                              imageProvider: NetworkImage(attachment.iconURL),
+                                            ),
+                                          ),
+                                        );
                                           },
                                               child: Image.network(attachment.iconURL),
                                             ),
