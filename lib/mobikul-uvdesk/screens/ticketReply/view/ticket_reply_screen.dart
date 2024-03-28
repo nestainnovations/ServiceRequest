@@ -122,12 +122,7 @@ class TicketReplyScreenState extends State<TicketReplyScreen> {
             ApplicationLocalizations.instance!
                 .translate(StringKeys.replyButtonLabel)
                 .toCapitalized(),
-            style: const TextStyle(
-                              color: Color.fromARGB(255, 255, 255, 255), // Set the text color to white
-                              fontFamily: 'Montserrat',
-                              fontSize: 18, // You might need to adjust the font size as per your requirement
-                              fontWeight: FontWeight.bold, // Make the font bold
-                            ),
+            style: MobikulTheme.mobikulTheme.textTheme.bodyLarge,
           ),
           actions: [
             IconButton(
@@ -213,7 +208,7 @@ class TicketReplyScreenState extends State<TicketReplyScreen> {
                                           },
                                           child: const Icon(
                                             Icons.delete,
-                                            color: Color.fromARGB(255, 189, 7, 7),
+                                            color: Color.fromARGB(255, 238, 73, 73),
                                           ),
                                         ),
                                       )
@@ -232,7 +227,7 @@ class TicketReplyScreenState extends State<TicketReplyScreen> {
                                           },
                                           child: const Icon(
                                             Icons.delete,
-                                            color: Color.fromARGB(255, 180, 7, 7),
+                                            color: Color.fromARGB(255, 245, 48, 48),
                                           ),
                                         ),
                                       ),
@@ -265,15 +260,15 @@ class TicketReplyScreenState extends State<TicketReplyScreen> {
       attachmentMultipartFileList = await convertListToMultipart(fileList);
     }
 
-    BuildContext? currentContext = context;
-      if (currentContext.mounted) {
-        if (fileList.isNotEmpty && fileList.length > 5) {
-          AlertMessage.showError(
-              ApplicationLocalizations.instance!
-                  .translate(StringKeys.attachmentCountMoreThan5Label),
-              currentContext);
-        }
-      } else {
+    if (fileList.isNotEmpty && fileList.length > 5) {
+      if (context.mounted) {
+        AlertMessage.showError(
+            ApplicationLocalizations.instance!
+                .translate(StringKeys.attachmentCountMoreThan5Label),
+            // ignore: use_build_context_synchronously
+            context);
+      }
+    } else {
       showSubmitOptionDialog(message, fileList.isNotEmpty ? attachmentMultipartFileList: null);
     }
   }
