@@ -38,10 +38,9 @@ DashboardTicketList _$DashboardTicketListFromJson(Map<String, dynamic> json) =>
               ?.map((e) => Priority.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      type: (json['type'] as List<dynamic>?)
-              ?.map((e) => Type.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      type: json['type'] == null
+          ? []
+          : DashboardTicketList._typeFromJson(json['type'] as List),
       source: json['source'] == null
           ? null
           : Source.fromJson(json['source'] as Map<String, dynamic>),
@@ -63,7 +62,7 @@ Map<String, dynamic> _$DashboardTicketListToJson(
     };
 
 Tickets _$TicketsFromJson(Map<String, dynamic> json) => Tickets(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       subject: json['subject'] as String? ?? '',
       isCustomerView: json['isCustomerView'] as bool? ?? false,
       status: json['status'] == null
@@ -72,7 +71,9 @@ Tickets _$TicketsFromJson(Map<String, dynamic> json) => Tickets(
       group: json['group'] == null
           ? null
           : Group.fromJson(json['group'] as Map<String, dynamic>),
-      source: json['source'] as String? ?? '',
+      source: json['source'] == null
+          ? ''
+          : DashboardTicketList._stringFromJson(json['source']),
       isStarred: json['isStarred'] as bool? ?? false,
       type: json['type'] == null
           ? null
@@ -80,8 +81,12 @@ Tickets _$TicketsFromJson(Map<String, dynamic> json) => Tickets(
       priority: json['priority'] == null
           ? null
           : Priority.fromJson(json['priority'] as Map<String, dynamic>),
-      formatedCreatedAt: json['formatedCreatedAt'] as String? ?? '',
-      totalThreads: json['totalThreads'] as String? ?? '',
+      formatedCreatedAt: json['formatedCreatedAt'] == null
+          ? ''
+          : DashboardTicketList._stringFromJson(json['formatedCreatedAt']),
+      totalThreads: json['totalThreads'] == null
+          ? ''
+          : DashboardTicketList._stringFromJson(json['totalThreads']),
       agent: json['agent'] == null
           ? null
           : Agent.fromJson(json['agent'] as Map<String, dynamic>),
@@ -107,11 +112,17 @@ Map<String, dynamic> _$TicketsToJson(Tickets instance) => <String, dynamic>{
     };
 
 Status _$StatusFromJson(Map<String, dynamic> json) => Status(
-      id: json['id'] as int? ?? 0,
-      code: json['code'] as String? ?? '',
-      description: json['description'] as String? ?? '',
-      colorCode: json['colorCode'] as String? ?? '',
-      sortOrder: json['sortOrder'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      code: json['code'] == null
+          ? ''
+          : DashboardTicketList._stringFromJson(json['code']),
+      description: json['description'] == null
+          ? ''
+          : DashboardTicketList._stringFromJson(json['description']),
+      colorCode: json['colorCode'] == null
+          ? ''
+          : DashboardTicketList._stringFromJson(json['colorCode']),
+      sortOrder: (json['sortOrder'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
@@ -123,7 +134,7 @@ Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
     };
 
 Group _$GroupFromJson(Map<String, dynamic> json) => Group(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
     );
 
@@ -134,7 +145,7 @@ Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
 
 CreatedAt _$CreatedAtFromJson(Map<String, dynamic> json) => CreatedAt(
       date: json['date'] as String? ?? '',
-      timezoneType: json['timezone_type'] as int? ?? 0,
+      timezoneType: (json['timezone_type'] as num?)?.toInt() ?? 0,
       timezone: json['timezone'] as String? ?? '',
     );
 
@@ -145,7 +156,7 @@ Map<String, dynamic> _$CreatedAtToJson(CreatedAt instance) => <String, dynamic>{
     };
 
 Type _$TypeFromJson(Map<String, dynamic> json) => Type(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
     );
 
@@ -155,7 +166,7 @@ Map<String, dynamic> _$TypeToJson(Type instance) => <String, dynamic>{
     };
 
 Priority _$PriorityFromJson(Map<String, dynamic> json) => Priority(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       code: json['code'] as String? ?? '',
       description: json['description'] as String? ?? '',
       colorCode: json['colorCode'] as String? ?? '',
@@ -169,7 +180,7 @@ Map<String, dynamic> _$PriorityToJson(Priority instance) => <String, dynamic>{
     };
 
 Agent _$AgentFromJson(Map<String, dynamic> json) => Agent(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       email: json['email'] as String? ?? '',
       name: json['name'] as String? ?? '',
       firstName: json['firstName'] as String? ?? '',
@@ -195,7 +206,7 @@ Map<String, dynamic> _$AgentToJson(Agent instance) => <String, dynamic>{
     };
 
 Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       email: json['email'] as String? ?? '',
       name: json['name'] as String? ?? '',
       firstName: json['firstName'] as String? ?? '',
@@ -215,25 +226,25 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
     };
 
 Pagination _$PaginationFromJson(Map<String, dynamic> json) => Pagination(
-      last: json['last'] as int? ?? 0,
-      current: json['current'] as int? ?? 0,
-      numItemsPerPage: json['numItemsPerPage'] as int? ?? 0,
-      first: json['first'] as int? ?? 0,
-      pageCount: json['pageCount'] as int? ?? 0,
-      totalCount: json['totalCount'] as int? ?? 0,
-      pageRange: json['pageRange'] as int? ?? 0,
-      startPage: json['startPage'] as int? ?? 0,
-      endPage: json['endPage'] as int? ?? 0,
-      next: json['next'] as int? ?? 0,
+      last: (json['last'] as num?)?.toInt() ?? 0,
+      current: (json['current'] as num?)?.toInt() ?? 0,
+      numItemsPerPage: (json['numItemsPerPage'] as num?)?.toInt() ?? 0,
+      first: (json['first'] as num?)?.toInt() ?? 0,
+      pageCount: (json['pageCount'] as num?)?.toInt() ?? 0,
+      totalCount: (json['totalCount'] as num?)?.toInt() ?? 0,
+      pageRange: (json['pageRange'] as num?)?.toInt() ?? 0,
+      startPage: (json['startPage'] as num?)?.toInt() ?? 0,
+      endPage: (json['endPage'] as num?)?.toInt() ?? 0,
+      next: (json['next'] as num?)?.toInt() ?? 0,
       pagesInRange: (json['pagesInRange'] as List<dynamic>?)
-              ?.map((e) => e as int)
+              ?.map((e) => (e as num).toInt())
               .toList() ??
           [],
-      firstPageInRange: json['firstPageInRange'] as int? ?? 0,
-      lastPageInRange: json['lastPageInRange'] as int? ?? 0,
-      currentItemCount: json['currentItemCount'] as int? ?? 0,
-      firstItemNumber: json['firstItemNumber'] as int? ?? 0,
-      lastItemNumber: json['lastItemNumber'] as int? ?? 0,
+      firstPageInRange: (json['firstPageInRange'] as num?)?.toInt() ?? 0,
+      lastPageInRange: (json['lastPageInRange'] as num?)?.toInt() ?? 0,
+      currentItemCount: (json['currentItemCount'] as num?)?.toInt() ?? 0,
+      firstItemNumber: (json['firstItemNumber'] as num?)?.toInt() ?? 0,
+      lastItemNumber: (json['lastItemNumber'] as num?)?.toInt() ?? 0,
       url: json['url'] as String? ?? '',
     );
 
@@ -259,7 +270,7 @@ Map<String, dynamic> _$PaginationToJson(Pagination instance) =>
     };
 
 UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) => UserDetails(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       email: json['email'] as String? ?? '',
       name: json['name'] as String? ?? '',
       profileImagePath: json['profileImagePath'] as String? ?? '',
@@ -274,8 +285,8 @@ Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
     };
 
 Agents _$AgentsFromJson(Map<String, dynamic> json) => Agents(
-      id: json['id'] as int? ?? 0,
-      udId: json['udId'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      udId: (json['udId'] as num?)?.toInt() ?? 0,
       email: json['email'] as String? ?? '',
       name: json['name'] as String? ?? '',
     );
@@ -288,7 +299,7 @@ Map<String, dynamic> _$AgentsToJson(Agents instance) => <String, dynamic>{
     };
 
 Team _$TeamFromJson(Map<String, dynamic> json) => Team(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
     );
 

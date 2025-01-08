@@ -13,7 +13,7 @@ class _ApiClientRetrofit implements ApiClientRetrofit {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://service.happyharvard.org/public/api/v1';
+    baseUrl ??= 'https://service.sunsenz.com/public/api/v1';
   }
 
   final Dio _dio;

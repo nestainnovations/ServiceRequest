@@ -21,8 +21,8 @@ import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper_widgets/app_di
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/models/ticket/ticket_details.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/screens/ticketDetail/bloc/ticket_detail_bloc.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/download_helper.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:photo_view/photo_view.dart';
+
 
 
 class TicketDetailScreen extends StatefulWidget {
@@ -250,46 +250,53 @@ class TicketDetailScreenState extends State<TicketDetailScreen> {
                                   const Text(
                                     'Message:',
                                     style: TextStyle(
-                                      color: Color(0xFF000000),
+                                      color: Color(0xFFfC5A03),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                     ),
                                   ),
                                   const SizedBox(
                                   height: 2,
-                                  ),
-                                  Text.rich(
-                                    TextSpan(
-                                      text: '',
-                                      children: [
-                                        WidgetSpan(
-                                          child: Linkify(
-                                            onOpen: (link) async {
-                                              // Handle when a link is clicked
-                                              // ignore: deprecated_member_use
-                                              if (await canLaunch(link.url)) {
-                                                // ignore: deprecated_member_use
-                                                await launch(link.url);
-                                              } else {
-                                                throw 'Could not launch $link';
-                                              }
-                                            },
-                                            text: dataModel.ticket!.threads[index].message,
-                                            style: const TextStyle(
-                                              color: Color(0xFFfC5A03),
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                            ),
-                                            linkStyle: const TextStyle(
-                                              color: Color.fromARGB(255, 40, 138, 218), // Customize link color as needed
-                                              decoration: TextDecoration.underline,
-                                              fontSize: 15, // Underline links
+                                  ),   
+                                    Text.rich(
+                                      TextSpan(
+                                        text: '',
+                                        children: [
+                                          if (RegExp(r'https?://').hasMatch(dataModel.ticket!.threads[index].message))
+                                           WidgetSpan(
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  final url = RegExp(r'(https?://[^\s&]+)').firstMatch(dataModel.ticket!.threads[index].message)?.group(0);
+                                                  if (url != null && await canLaunch(url)) {
+                                                    await launch(url);
+                                                  } else {
+                                                    throw 'Could not launch $url';
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Click here for location',
+                                                  style: const TextStyle(
+                                                    color: Color.fromARGB(255, 6, 62, 107),
+                                                    decoration: TextDecoration.underline,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                        else
+                                          WidgetSpan(
+                                            child: Text(
+                                              Utils.parseHtmlString(dataModel.ticket!.threads[index].message),
+                                              style: const TextStyle(
+                                                color: Color(0xFF000000),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                   const SizedBox(
                                   height: 18,
                                   ),

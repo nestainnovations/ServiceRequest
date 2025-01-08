@@ -15,9 +15,9 @@ import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/app_routes.
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/application_localization.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/navigation/app_navigation.dart'as app_navigation;
 
-class UvDeskApp extends StatefulWidget {
+class MEServe extends StatefulWidget {
   final String? selectedLanguage;
-  const UvDeskApp(
+  const MEServe(
       this.selectedLanguage, {
         Key? key,
       }) : super(key: key);
@@ -28,7 +28,7 @@ class UvDeskApp extends StatefulWidget {
   }
 }
 
-class UvDeskAppState extends State<UvDeskApp> {
+class UvDeskAppState extends State<MEServe> {
   Locale? _locale;
   @override
   void initState() {

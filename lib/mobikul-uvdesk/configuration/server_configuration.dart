@@ -9,7 +9,7 @@
  *
  */
 
-const String baseUrl = "https://service.happyharvard.org/public/api/v1";
+const String baseUrl = "https://service.sunsenz.com/public/api/v1";
 const String demoUserName = "";
 const String demoPassword = "";
 const bool logApiCalls = true;

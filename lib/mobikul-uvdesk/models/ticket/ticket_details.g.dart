@@ -11,7 +11,8 @@ TicketDetails _$TicketDetailsFromJson(Map<String, dynamic> json) =>
       ticket: json['ticket'] == null
           ? null
           : Ticket.fromJson(json['ticket'] as Map<String, dynamic>),
-      totalCustomerTickets: json['totalCustomerTickets'] as int? ?? 0,
+      totalCustomerTickets:
+          (json['totalCustomerTickets'] as num?)?.toInt() ?? 0,
       supportGroups: (json['supportGroups'] as List<dynamic>?)
               ?.map((e) => SupportGroups.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -47,11 +48,11 @@ Map<String, dynamic> _$TicketDetailsToJson(TicketDetails instance) =>
     };
 
 Ticket _$TicketFromJson(Map<String, dynamic> json) => Ticket(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       source: json['source'] as String? ?? '',
-      priority: json['priority'] as int? ?? 0,
-      status: json['status'] as int? ?? 0,
-      type: json['type'] as int? ?? 0,
+      priority: (json['priority'] as num?)?.toInt() ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
+      type: (json['type'] as num?)?.toInt() ?? 0,
       subject: json['subject'] as String? ?? '',
       mobileNumber: json['mobileNumber'] as String? ?? '',
       district: json['district'] as String? ?? '',
@@ -81,7 +82,7 @@ Ticket _$TicketFromJson(Map<String, dynamic> json) => Ticket(
       customer: json['customer'] == null
           ? null
           : Customer.fromJson(json['customer'] as Map<String, dynamic>),
-      totalThreads: json['totalThreads'] as int? ?? 0,
+      totalThreads: (json['totalThreads'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$TicketToJson(Ticket instance) => <String, dynamic>{
@@ -112,7 +113,7 @@ Map<String, dynamic> _$TicketToJson(Ticket instance) => <String, dynamic>{
     };
 
 Group _$GroupFromJson(Map<String, dynamic> json) => Group(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
     );
 
@@ -122,7 +123,7 @@ Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
     };
 
 Team _$TeamFromJson(Map<String, dynamic> json) => Team(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
     );
 
@@ -132,7 +133,7 @@ Map<String, dynamic> _$TeamToJson(Team instance) => <String, dynamic>{
     };
 
 Threads _$ThreadsFromJson(Map<String, dynamic> json) => Threads(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       source: json['source'] as String? ?? '',
       threadType: json['threadType'] as String? ?? '',
       createdBy: json['createdBy'] as String? ?? '',
@@ -165,7 +166,7 @@ Map<String, dynamic> _$ThreadsToJson(Threads instance) => <String, dynamic>{
     };
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
       email: json['email'] as String? ?? '',
       thumbnail: json['thumbnail'] as String? ?? '',
@@ -179,7 +180,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
     };
 
 Attachments _$AttachmentsFromJson(Map<String, dynamic> json) => Attachments(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
       path: json['path'] as String? ?? '',
       relativePath: json['relativePath'] as String? ?? '',
@@ -198,7 +199,7 @@ Map<String, dynamic> _$AttachmentsToJson(Attachments instance) =>
     };
 
 Agent _$AgentFromJson(Map<String, dynamic> json) => Agent(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       email: json['email'] as String? ?? '',
       name: json['name'] as String? ?? '',
       firstName: json['firstName'] as String? ?? '',
@@ -218,7 +219,7 @@ Map<String, dynamic> _$AgentToJson(Agent instance) => <String, dynamic>{
     };
 
 Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       email: json['email'] as String? ?? '',
       name: json['name'] as String? ?? '',
       firstName: json['firstName'] as String? ?? '',
@@ -237,7 +238,7 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
 
 SupportGroups _$SupportGroupsFromJson(Map<String, dynamic> json) =>
     SupportGroups(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
     );
 
@@ -248,7 +249,7 @@ Map<String, dynamic> _$SupportGroupsToJson(SupportGroups instance) =>
     };
 
 SupportTeams _$SupportTeamsFromJson(Map<String, dynamic> json) => SupportTeams(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
     );
 
@@ -260,7 +261,7 @@ Map<String, dynamic> _$SupportTeamsToJson(SupportTeams instance) =>
 
 TicketStatuses _$TicketStatusesFromJson(Map<String, dynamic> json) =>
     TicketStatuses(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       code: json['code'] as String? ?? '',
       colorCode: json['colorCode'] as String? ?? '',
       description: json['description'] as String? ?? '',
@@ -276,7 +277,7 @@ Map<String, dynamic> _$TicketStatusesToJson(TicketStatuses instance) =>
 
 TicketPriorities _$TicketPrioritiesFromJson(Map<String, dynamic> json) =>
     TicketPriorities(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       code: json['code'] as String? ?? '',
       colorCode: json['colorCode'] as String? ?? '',
       description: json['description'] as String? ?? '',
@@ -291,7 +292,7 @@ Map<String, dynamic> _$TicketPrioritiesToJson(TicketPriorities instance) =>
     };
 
 TicketTypes _$TicketTypesFromJson(Map<String, dynamic> json) => TicketTypes(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       code: json['code'] as String? ?? '',
       isActive: json['isActive'] as bool? ?? false,
       description: json['description'] as String? ?? '',

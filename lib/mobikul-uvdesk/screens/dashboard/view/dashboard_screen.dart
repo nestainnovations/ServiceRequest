@@ -10,7 +10,7 @@
  */
 import 'dart:async';
 
-import 'package:easy_search_bar/easy_search_bar.dart';
+import 'package:flutter_easy_search_bar/flutter_easy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/configuration/mobikul_theme.dart';

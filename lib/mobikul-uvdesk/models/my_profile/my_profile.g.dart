@@ -24,7 +24,7 @@ Map<String, dynamic> _$MyProfileToJson(MyProfile instance) => <String, dynamic>{
     };
 
 Me _$MeFromJson(Map<String, dynamic> json) => Me(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       email: json['email'] as String? ?? '',
       name: json['name'] as String? ?? '',
       firstName: json['firstName'] as String? ?? '',

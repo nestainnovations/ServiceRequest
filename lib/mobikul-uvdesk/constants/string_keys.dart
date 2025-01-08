@@ -11,7 +11,7 @@
 
 // File that contains all the Keys that will be used for string translations
 class StringKeys {
-  static const String appName = "app_name";
+  static const String appName = "MEServe";
   static const String cancel = "cancel";
   static const String ok = "ok";
   static const String yesIWantToLogoutKey = "yesIWantToLogoutKey";

@@ -29,7 +29,7 @@ class DashboardTicketList {
   final List<Team> team;
   @JsonKey(defaultValue: [])
   final List<Priority> priority;
-  @JsonKey(defaultValue: [])
+  @JsonKey(defaultValue: [], fromJson: _typeFromJson)
   final List<Type> type;
   final Source? source;
 
@@ -50,6 +50,31 @@ class DashboardTicketList {
       _$DashboardTicketListFromJson(json);
 
   Map<String, dynamic> toJson() => _$DashboardTicketListToJson(this);
+
+  static List<Type> _typeFromJson(List<dynamic> jsonList) {
+    return jsonList.map((e) {
+      if (e is Map<String, dynamic>) {
+        return Type.fromJson(e);
+      } else if (e is int) {
+        return Type(id: e, name: e.toString());
+      } else if (e is String) {
+        return Type(id: 0, name: e);
+      } else {
+        throw Exception('Unexpected type');
+      }
+    }).toList();
+  }
+
+  static String _stringFromJson(dynamic json) {
+    if (json is String) {
+      return json;
+    } else if (json is int) {
+      return json.toString();
+    } else {
+      throw Exception('Unexpected type: ${json.runtimeType}');
+    }
+  }
+
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -62,15 +87,15 @@ class Tickets {
   final bool isCustomerView;
   final Status? status;
   final Group? group;
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: '', fromJson: DashboardTicketList._stringFromJson)
   final String source;
   @JsonKey(defaultValue: false)
   final bool isStarred;
   final Type? type;
   final Priority? priority;
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: '', fromJson: DashboardTicketList._stringFromJson)
   final String formatedCreatedAt;
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: '', fromJson: DashboardTicketList._stringFromJson)
   final String totalThreads;
   final Agent? agent;
   final Customer? customer;
@@ -101,11 +126,11 @@ class Tickets {
 class Status {
   @JsonKey(defaultValue: 0)
   final int id;
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: '', fromJson: DashboardTicketList._stringFromJson)
   final String code;
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: '', fromJson: DashboardTicketList._stringFromJson)
   final String description;
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: '', fromJson: DashboardTicketList._stringFromJson)
   final String colorCode;
   @JsonKey(defaultValue: 0)
   final int sortOrder;
