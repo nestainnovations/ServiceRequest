@@ -5,10 +5,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/uv_desk_app.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper_widgets/restart_widget.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/helper/app_storage_pref.dart';
-import 'package:uv_desk_flutter_open_source/mobikul-uvdesk/constants/pref_keys.dart';
+import 'package:meserve/service/meserve.dart';
+import 'package:meserve/service/helper_widgets/restart_widget.dart';
+import 'package:meserve/service/helper/app_storage_pref.dart';
+import 'package:meserve/service/constants/pref_keys.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
